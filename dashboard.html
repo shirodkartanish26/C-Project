@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Blue Whale - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header-info {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-card .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .chart-card h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .table-card h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .error-message {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .error-message h2 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .error-message ol {
+            text-align: left;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .error-message code {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏨 Hotel Blue Whale - Dashboard</h1>
+        <div class="header-info">👤 Admin View</div>
+    </div>
+
+    <div class="container">
+        <div id="loading" class="loading">📊 Loading dashboard data...</div>
+        <div id="error-container"></div>
+        <div id="dashboard" style="display: none;">
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon">🏨</div>
+                    <h3>Total Rooms</h3>
+                    <div class="value" id="totalRooms">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">✅</div>
+                    <h3>Available Rooms</h3>
+                    <div class="value" id="availableRooms">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">📅</div>
+                    <h3>Booked Rooms</h3>
+                    <div class="value" id="bookedRooms">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">🔧</div>
+                    <h3>Maintenance</h3>
+                    <div class="value" id="maintenanceRooms">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">💰</div>
+                    <h3>Total Revenue</h3>
+                    <div class="value" id="totalRevenue">₹0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">👥</div>
+                    <h3>Total Customers</h3>
+                    <div class="value" id="totalCustomers">0</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h2>Room Occupancy Status</h2>
+                    <canvas id="occupancyChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h2>Revenue by Room Type</h2>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h2>Booking Status Overview</h2>
+                    <canvas id="bookingChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h2>Occupancy Rate</h2>
+                    <canvas id="occupancyRateChart"></canvas>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <h2>📊 Quick Summary</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="summaryTable"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        fetch('dashboard_data.json')
+            .then(response => {
+                if (!response.ok) throw new Error('File not found');
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('error-container').style.display = 'none';
+
+                document.getElementById('totalRooms').textContent = data.rooms.total;
+                document.getElementById('availableRooms').textContent = data.rooms.available;
+                document.getElementById('bookedRooms').textContent = data.rooms.booked;
+                document.getElementById('maintenanceRooms').textContent = data.rooms.maintenance;
+                document.getElementById('totalRevenue').textContent = '₹' + data.revenue.completed.toFixed(2);
+                document.getElementById('totalCustomers').textContent = data.customers.total;
+
+                new Chart(document.getElementById('occupancyChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Available', 'Booked', 'Maintenance'],
+                        datasets: [{
+                            data: [data.rooms.available, data.rooms.booked, data.rooms.maintenance],
+                            backgroundColor: ['#4caf50', '#ff9800', '#f44336']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+
+                new Chart(document.getElementById('revenueChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: data.roomTypeRevenue.map(r => r.type),
+                        datasets: [{
+                            label: 'Revenue (₹)',
+                            data: data.roomTypeRevenue.map(r => r.revenue),
+                            backgroundColor: '#667eea'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+
+                new Chart(document.getElementById('bookingChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Confirmed', 'Cancelled', 'Checked Out'],
+                        datasets: [{
+                            data: [data.bookings.confirmed, data.bookings.cancelled, data.bookings.checkedOut],
+                            backgroundColor: ['#2196f3', '#f44336', '#4caf50']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+
+                const occupancyRate = ((data.rooms.booked / data.rooms.total) * 100).toFixed(1);
+                new Chart(document.getElementById('occupancyRateChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Occupied', 'Empty'],
+                        datasets: [{
+                            data: [occupancyRate, 100 - occupancyRate],
+                            backgroundColor: ['#764ba2', '#e0e0e0']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.parsed + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const summaryHTML = `
+                    <tr><td>Total Bookings</td><td><strong>${data.bookings.total}</strong></td></tr>
+                    <tr><td>Active Bookings</td><td><strong>${data.bookings.confirmed}</strong></td></tr>
+                    <tr><td>Completed Revenue</td><td><strong>₹${data.revenue.completed.toFixed(2)}</strong></td></tr>
+                    <tr><td>Estimated Revenue</td><td><strong>₹${data.revenue.estimated.toFixed(2)}</strong></td></tr>
+                    <tr><td>Occupancy Rate</td><td><strong>${occupancyRate}%</strong></td></tr>
+                    <tr><td>Maintenance Requests</td><td><strong>${data.maintenance.total}</strong></td></tr>
+                `;
+                document.getElementById('summaryTable').innerHTML = summaryHTML;
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-container').innerHTML = `
+                    <div class="error-message">
+                        <h2>⚠️ Dashboard Data Not Found</h2>
+                        <p>Please follow these steps:</p>
+                        <ol>
+                            <li>Run your C++ program (e.g. <code>./hotel</code> or run from IDE)</li>
+                            <li>Add some test data (customers, bookings)</li>
+                            <li>Select option <strong>14</strong> (Generate Web Dashboard)</li>
+                            <li>Make sure <code>dashboard.html</code> and <code>dashboard_data.json</code> are in the same folder</li>
+                            <li>Open <code>login.html</code> in your browser and log in</li>
+                        </ol>
+                    </div>
+                `;
+            });
+    </script>
+</body>
+</html>
+
