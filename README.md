@@ -1,4 +1,4 @@
-Project Overview
+C++ Project Overview 
 
 This project is a Hotel Management System developed in C++, designed to manage hotel operations such as room booking, payments, staff management, and maintenance tasks.
 It aims to provide an efficient, menu-driven solution for customers, hotel staff, and administrators.
