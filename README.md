@@ -1,80 +1,57 @@
-C++ Project Overview 
+Hotel Management System (C++ Project)
 
-This project is a Hotel Management System developed in C++, designed to manage hotel operations such as room booking, payments, staff management, and maintenance tasks.
-It aims to provide an efficient, menu-driven solution for customers, hotel staff, and administrators.
+A modular, menu-driven Hotel Management System developed in C++, designed to handle booking, payments, staff operations, maintenance tasks, and admin reporting.
+The system runs entirely through the terminal and uses C++ file handling for data storage.
 
-1.Key Functionalities
+*Features*
+1) Customer
+-Book rooms
+-Cancel bookings
+-View booking details
+-Make payments
 
-a) Customer Module
+2) Room & Booking Management
+-Check room availability
+-Manage room types & pricing
+-Allocate / release rooms
 
-Make a new room booking
+3) Payment Module
+-Record payments (Cash/Card/UPI)
+-Store amount, date & booking ID
 
-Cancel a booking
+4) Admin
+-Login authentication
+-Manage staff
+-View dashboard reports
 
-View booking details
+5) Staff
+-View assigned tasks
+-Update task status
 
+6) Maintenance
+-Report issues
+-Assign technician
+-Update repair status
 
-b) Booking & Room Management
+7) Dashboard
+-Occupancy status
+-Revenue summary
+-Maintenance overview
 
-Check room availability
+*User Roles*
+-Customer – Books rooms, makes payments
+-Admin – Controls system, staff, and reports
+-Staff – Performs hotel operations
 
-Book / Release rooms
+*Future Enhancements*
+GUI or Web-based interface
+Online booking portal
+Automated reports & notifications
+Multi-hotel management
+Improved security & encryption
 
-Manage room types, features, and pricing
+*Conclusion*
+This Hotel Management System provides a complete working model for academic submissions and real-world use. 
+It is easy to extend, modular, and demonstrates strong C++ OOP concepts.
 
-
-c) Payment Module
-
-Process customer payments
-
-Store amount, date, and payment mode
-
-Link payments to specific bookings
-
-
-d) Admin Module
-
-Manage staff details
-
-Generate reports
-
-View dashboard (occupancy, revenue, maintenance summary)
-
-
-e) Staff Module
-
-View assigned tasks
-
-Perform hotel operations
-
-Support admin in day-to-day functioning
-
-
-f) Maintenance Module
-
-Report maintenance issues
-
-Schedule tasks
-
-Update repair/maintenance status
-
-
-g) Dashboard
-
-Occupancy status
-
-Revenue reports
-
-Maintenance summary
-
-
-2) Users Implemented
-
-a)Customer – Books rooms, makes payments
-
-b)Admin – Manages entire system, staff, and reports
-
-c)Staff – Performs assigned tasks
-
-d)Maintenance Team – Handles service requests and updates status
-
+Maintenance Team – Handles service requests
